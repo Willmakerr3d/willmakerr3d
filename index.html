@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WillMakerr3D - Catálogo & Impressão 3D</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&display=swap');
+
+    body {
+      background-color: #050505;
+      color: #e5e5e5;
+      font-family: 'Rajdhani', sans-serif;
+    }
+
+    .font-orbitron {
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    .neon-border-red {
+      box-shadow: 0 0 15px rgba(255, 0, 51, 0.4), inset 0 0 10px rgba(255, 0, 51, 0.2);
+    }
+
+    .neon-text-red {
+      text-shadow: 0 0 8px rgba(255, 0, 51, 0.6);
+    }
+
+    .glass-card {
+      background: rgba(18, 18, 22, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 0, 51, 0.2);
+    }
+
+    .glass-card:hover {
+      border-color: rgba(255, 0, 51, 0.6);
+      box-shadow: 0 0 20px rgba(255, 0, 51, 0.25);
+    }
+
+    /* Pattern para fotos PNG transparentes */
+    .png-checkerboard {
+      background-color: #0a0a0c;
+      background-image: radial-gradient(#1f1f26 1px, transparent 1px);
+      background-size: 12px 12px;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0a0a0c;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #ff0033;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #cc0029;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-red-600 selection:text-white">
+
+  <!-- HEADER -->
+  <header class="sticky top-0 z-40 bg-black/90 backdrop-blur-md border-b border-red-900/40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20 gap-4">
+        
+        <!-- LOGO -->
+        <div class="flex items-center gap-3 cursor-pointer" onclick="filterCategory('todos')">
+          <div class="w-12 h-12 rounded-full border-2 border-red-600 p-0.5 shadow-[0_0_12px_rgba(255,0,51,0.5)] bg-black flex items-center justify-center overflow-hidden flex-shrink-0">
+            <svg viewBox="0 0 300 300" class="w-full h-full object-contain">
+              <circle cx="150" cy="150" r="140" fill="none" stroke="#ff0033" stroke-width="6" />
+              <path d="M 120 70 Q 150 40 180 70 Q 210 100 150 140 Q 90 100 120 70 Z" fill="#ff0033" />
+              <circle cx="135" cy="85" r="8" fill="#050505"/>
+              <circle cx="165" cy="85" r="8" fill="#050505"/>
+              <circle cx="150" cy="105" r="10" fill="#050505"/>
+              <text x="150" y="185" text-anchor="middle" fill="#ffffff" font-family="sans-serif" font-weight="900" font-size="26">WillMaker<tspan fill="#ff0033">3D</tspan></text>
+              <text x="150" y="210" text-anchor="middle" fill="#cccccc" font-family="sans-serif" font-weight="600" font-size="11" letter-spacing="3">IMPRESSÃO 3D</text>
+              <path d="M 110 225 L 190 225 M 150 225 L 150 240 L 142 250 L 158 250 L 150 240 Z" stroke="#ff0033" stroke-width="4" fill="#ff0033" />
+              <path d="M 120 258 L 180 258 M 125 264 L 175 264" stroke="#ff0033" stroke-width="3" />
+            </svg>
+          </div>
+          <div>
+            <span class="font-orbitron font-extrabold text-xl tracking-wider text-white block leading-none">
+              WillMakerr<span class="text-red-600 neon-text-red">3D</span>
+            </span>
+            <span class="text-xs text-gray-400 font-medium tracking-widest block uppercase mt-0.5">
+              Impressão 3D • PLA & PETG
+            </span>
+          </div>
+        </div>
+
+        <!-- CATALOG SELECTION DROP-DOWN -->
+        <div class="hidden lg:flex items-center gap-2 bg-neutral-900 border border-neutral-800 rounded-xl px-3 py-1.5">
+          <i data-lucide="folder-tree" class="w-4 h-4 text-red-500"></i>
+          <span class="text-xs text-gray-400 font-semibold">Nomenclatura / Catálogo:</span>
+          <select id="headerCatalogSelect" onchange="changeActiveCatalog(this.value)" class="bg-black text-xs font-bold text-white border border-neutral-700 rounded-lg px-2 py-1 focus:outline-none focus:border-red-600 cursor-pointer">
+            <!-- Dynamic Catalogs -->
+          </select>
+        </div>
+
+        <!-- SEARCH BAR -->
+        <div class="hidden md:flex items-center flex-1 max-w-xs lg:max-w-md">
+          <div class="relative w-full">
+            <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Buscar peças 3D, chaveiros, copos..." 
+                   class="w-full bg-neutral-900/90 border border-neutral-800 rounded-full py-2 pl-10 pr-4 text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:border-red-600 transition">
+            <i data-lucide="search" class="w-4 h-4 text-gray-500 absolute left-3.5 top-2.5"></i>
+          </div>
+        </div>
+
+        <!-- NAV ACTIONS -->
+        <div class="flex items-center gap-3">
+          <a id="btnInstaHeader" href="#" target="_blank" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-900 border border-neutral-800 text-xs text-gray-300 hover:text-red-500 hover:border-red-900/50 transition">
+            <i data-lucide="instagram" class="w-4 h-4 text-red-500"></i>
+            <span id="instaHandleHeader">@willmakerr3d</span>
+          </a>
+
+          <a id="btnWhatsHeader" href="#" target="_blank" class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-900 border border-neutral-800 text-xs text-gray-300 hover:text-green-500 hover:border-green-900/50 transition">
+            <i data-lucide="phone" class="w-4 h-4 text-green-500"></i>
+            <span id="whatsNumHeader">Contato</span>
+          </a>
+
+          <button onclick="toggleAdminModal()" class="flex items-center gap-2 bg-gradient-to-r from-red-700 to-red-900 hover:from-red-600 hover:to-red-800 text-white font-semibold text-xs py-2 px-4 rounded-lg shadow-[0_0_10px_rgba(255,0,51,0.3)] transition border border-red-500/30">
+            <i data-lucide="shield-check" class="w-4 h-4"></i>
+            <span>Modo Admin</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE CATALOG SELECTOR BAR -->
+  <div class="lg:hidden bg-neutral-950 border-b border-neutral-800 py-2 px-4 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <i data-lucide="folder-tree" class="w-4 h-4 text-red-500"></i>
+      <span class="text-xs text-gray-400 font-semibold">Catálogo:</span>
+    </div>
+    <select id="mobileCatalogSelect" onchange="changeActiveCatalog(this.value)" class="bg-black text-xs font-bold text-white border border-neutral-700 rounded-lg px-2 py-1 focus:outline-none focus:border-red-600">
+      <!-- Dynamic Catalogs -->
+    </select>
+  </div>
+
+  <!-- HERO BANNER -->
+  <section class="relative bg-neutral-950 overflow-hidden border-b border-neutral-900">
+    <div id="heroBannerBg" class="absolute inset-0 opacity-20 bg-cover bg-center transition-all duration-500" style="background-image: url('https://images.unsplash.com/photo-1631541909061-71e349d1f203?auto=format&fit=crop&w=1600&q=80');"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-black via-black/90 to-transparent"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 relative z-10">
+      <div class="max-w-2xl">
+        <span class="inline-flex items-center gap-2 bg-red-950/80 border border-red-700/50 px-3 py-1 rounded-full text-xs font-semibold text-red-400 mb-4 tracking-wider uppercase">
+          <i data-lucide="box" class="w-3.5 h-3.5"></i> Tecnologia FDM • PLA & PETG
+        </span>
+        <h1 id="heroTitle" class="text-3xl sm:text-4xl md:text-5xl font-orbitron font-extrabold text-white leading-tight mb-3">
+          Impressões 3D sob medida em <span class="text-red-600 neon-text-red">PLA & PETG</span>
+        </h1>
+        <p id="heroSubtitle" class="text-gray-400 text-sm sm:text-base leading-relaxed mb-6">
+          Confira os nossos catálogos com colecionáveis, itens funcionais e peças personalizadas. Atendemos pedidos avulsos e grandes encomendas com valores exclusivos para atacado!
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a href="#catalogo" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-2 shadow-[0_0_15px_rgba(255,0,51,0.4)] transition">
+            Explorar Catálogo <i data-lucide="arrow-down" class="w-4 h-4"></i>
+          </a>
+          <button onclick="filterCategory('atacado')" class="bg-neutral-900 hover:bg-neutral-800 text-gray-200 border border-neutral-700 px-5 py-2.5 rounded-lg text-sm font-semibold flex items-center gap-2 transition">
+            <i data-lucide="layers" class="w-4 h-4 text-red-500"></i> Ver Tabela de Atacado
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN CATALOG CONTENT -->
+  <main id="catalogo" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-1 w-full">
+    
+    <!-- CATEGORIES & FILTERS -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+      
+      <!-- Category Buttons -->
+      <div class="flex flex-wrap gap-2" id="categoryFilterContainer">
+        <!-- JS Inserted buttons -->
+      </div>
+
+      <!-- Material Badges Info -->
+      <div class="flex items-center gap-3 text-xs text-gray-400 bg-neutral-900/80 px-4 py-2 rounded-lg border border-neutral-800">
+        <span class="text-gray-500 font-semibold">Materiais:</span>
+        <span class="inline-flex items-center gap-1 text-red-400 font-medium"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i> PLA Premium</span>
+        <span class="inline-flex items-center gap-1 text-red-400 font-medium"><i data-lucide="check-circle" class="w-3.5 h-3.5"></i> PETG Resistente</span>
+      </div>
+    </div>
+
+    <!-- PRODUCTS GRID -->
+    <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <!-- Cards renderizados via JS -->
+    </div>
+
+    <!-- EMPTY STATE -->
+    <div id="emptyState" class="hidden text-center py-16 bg-neutral-900/30 rounded-2xl border border-dashed border-neutral-800 my-8">
+      <i data-lucide="package-search" class="w-16 h-16 text-neutral-600 mx-auto mb-4"></i>
+      <h3 class="text-lg font-orbitron font-semibold text-gray-300">Nenhum produto encontrado</h3>
+      <p class="text-sm text-gray-500 mt-1">Tente pesquisar por outro termo ou selecione uma categoria diferente.</p>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-black border-t border-neutral-900 py-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <div>
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-8 h-8 rounded-full border border-red-600 p-0.5 bg-black">
+              <svg viewBox="0 0 300 300" class="w-full h-full">
+                <circle cx="150" cy="150" r="140" fill="none" stroke="#ff0033" stroke-width="10"/>
+                <path d="M 120 70 Q 150 40 180 70 Q 210 100 150 140 Q 90 100 120 70 Z" fill="#ff0033"/>
+              </svg>
+            </div>
+            <span class="font-orbitron font-bold text-lg text-white">WillMakerr<span class="text-red-600">3D</span></span>
+          </div>
+          <p class="text-xs text-gray-400 leading-relaxed">
+            Especialistas em modelagem e impressão 3D de alta qualidade. Produzimos colecionáveis, suportes funcionais, peças cosplay e produção em lote via tecnologia FDM com os melhores filamentos PLA e PETG.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="font-orbitron text-sm font-semibold text-gray-200 mb-3 uppercase tracking-wider">Especificações FDM</h4>
+          <ul class="text-xs text-gray-400 space-y-2">
+            <li class="flex items-center gap-2"><i data-lucide="layers" class="w-3.5 h-3.5 text-red-500"></i> Resolução de Camada: 0.12mm a 0.28mm</li>
+            <li class="flex items-center gap-2"><i data-lucide="shield" class="w-3.5 h-3.5 text-red-500"></i> PLA: Alta precisão e excelente acabamento estético</li>
+            <li class="flex items-center gap-2"><i data-lucide="cpu" class="w-3.5 h-3.5 text-red-500"></i> PETG: Alta resistência mecânica e térmica</li>
+            <li class="flex items-center gap-2"><i data-lucide="truck" class="w-3.5 h-3.5 text-red-500"></i> Atendimento para encomendas sob demanda em todo o Brasil</li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-orbitron text-sm font-semibold text-gray-200 mb-3 uppercase tracking-wider">Canais de Contato</h4>
+          <div class="space-y-3 text-xs">
+            <a id="footerInstaLink" href="#" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-red-500 transition">
+              <i data-lucide="instagram" class="w-4 h-4 text-red-500"></i>
+              <span id="footerInstaText">@willmakerr3d</span>
+            </a>
+            <a id="footerWhatsLink" href="#" target="_blank" class="flex items-center gap-2 text-gray-400 hover:text-green-500 transition">
+              <i data-lucide="phone" class="w-4 h-4 text-green-500"></i>
+              <span id="footerWhatsText">+55 (00) 00000-0000</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t border-neutral-900 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500 gap-4">
+        <p>© <span id="yearSpan"></span> WillMakerr3D. Todos os direitos reservados. Sem uso de Resina • 100% PLA e PETG.</p>
+        <div class="flex gap-4">
+          <button onclick="toggleAdminModal()" class="hover:text-red-500 transition">Área Restrita (Admin)</button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL: PRODUCT DETAILS & WHOLESALE CALCULATOR -->
+  <div id="productModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-neutral-900 border border-red-900/50 rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-[0_0_30px_rgba(255,0,51,0.2)]">
+      <div id="modalProductContent">
+        <!-- Renderizado dinamicamente via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ADMIN LOGIN -->
+  <div id="adminAuthModal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-neutral-900 border border-red-700/60 rounded-2xl max-w-md w-full p-6 shadow-[0_0_30px_rgba(255,0,51,0.3)]">
+      <div class="text-center mb-6">
+        <div class="w-12 h-12 bg-red-950/80 border border-red-600 rounded-full flex items-center justify-center mx-auto mb-3 shadow-[0_0_15px_rgba(255,0,51,0.4)]">
+          <i data-lucide="lock" class="w-6 h-6 text-red-500"></i>
+        </div>
+        <h3 class="font-orbitron text-xl font-bold text-white">Acesso Restrito</h3>
+        <p class="text-xs text-gray-400 mt-1">Informe a palavra-passe do administrador para realizar edições no catálogo.</p>
+      </div>
+
+      <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs text-gray-400 mb-1">Palavra-passe de Acesso</label>
+          <input type="password" id="adminPasswordInput" placeholder="••••••••••••" required 
+                 class="w-full bg-black border border-neutral-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-red-600">
+        </div>
+        <div id="loginError" class="hidden text-xs text-red-500 text-center font-semibold">
+          Palavra-passe incorreta! Tente novamente.
+        </div>
+        <div class="flex gap-3 pt-2">
+          <button type="button" onclick="closeAdminAuthModal()" class="w-1/2 py-2 bg-neutral-800 hover:bg-neutral-700 text-gray-300 rounded-lg text-xs font-semibold transition">
+            Cancelar
+          </button>
+          <button type="submit" class="w-1/2 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-semibold shadow-[0_0_10px_rgba(255,0,51,0.4)] transition">
+            Entrar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ADMIN PANEL -->
+  <div id="adminPanelModal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-neutral-900 border border-red-600/50 rounded-2xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-[0_0_40px_rgba(255,0,51,0.3)]">
+      
+      <!-- Modal Admin Header -->
+      <div class="p-5 border-b border-neutral-800 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <i data-lucide="sliders" class="w-6 h-6 text-red-500"></i>
+          <div>
+            <h3 class="font-orbitron text-lg font-bold text-white">Painel de Gestão - WillMakerr3D</h3>
+            <p class="text-xs text-gray-400">Edite produtos, faça upload de imagens PNG transparentes e configure a loja</p>
+          </div>
+        </div>
+        <button onclick="closeAdminPanel()" class="text-gray-400 hover:text-white p-1 rounded-lg bg-neutral-800">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Admin Navigation Tabs -->
+      <div class="flex border-b border-neutral-800 bg-black/40 px-5 overflow-x-auto">
+        <button id="tabBtnProducts" onclick="switchAdminTab('products')" class="py-3 px-4 text-xs font-semibold border-b-2 border-red-600 text-white flex items-center gap-2 whitespace-nowrap">
+          <i data-lucide="box" class="w-4 h-4"></i> Produtos do Catálogo (<span id="adminProductCount">0</span>)
+        </button>
+        <button id="tabBtnCatalogs" onclick="switchAdminTab('catalogs')" class="py-3 px-4 text-xs font-semibold border-b-2 border-transparent text-gray-400 hover:text-gray-200 flex items-center gap-2 whitespace-nowrap">
+          <i data-lucide="folder-tree" class="w-4 h-4"></i> Nomenclaturas & Catálogos (<span id="adminCatalogCount">0</span>)
+        </button>
+        <button id="tabBtnCategories" onclick="switchAdminTab('categories')" class="py-3 px-4 text-xs font-semibold border-b-2 border-transparent text-gray-400 hover:text-gray-200 flex items-center gap-2 whitespace-nowrap">
+          <i data-lucide="tag" class="w-4 h-4"></i> Categorias (<span id="adminCategoryCount">0</span>)
+        </button>
+        <button id="tabBtnStore" onclick="switchAdminTab('store')" class="py-3 px-4 text-xs font-semibold border-b-2 border-transparent text-gray-400 hover:text-gray-200 flex items-center gap-2 whitespace-nowrap">
+          <i data-lucide="store" class="w-4 h-4"></i> Dados da Loja & Banner
+        </button>
+      </div>
+
+      <!-- Admin Tab Content Area -->
+      <div class="p-6 overflow-y-auto flex-1">
+        
+        <!-- TAB 1: PRODUCTS MANAGEMENT -->
+        <div id="tabProductsContent" class="space-y-6">
+          <div class="flex justify-between items-center">
+            <h4 class="text-sm font-semibold text-gray-200">Lista de Peças Cadastradas</h4>
+            <button onclick="openProductForm()" class="bg-red-600 hover:bg-red-700 text-white text-xs font-semibold px-3 py-2 rounded-lg flex items-center gap-1.5 shadow-[0_0_10px_rgba(255,0,51,0.3)] transition">
+              <i data-lucide="plus" class="w-4 h-4"></i> Adicionar Novo Produto
+            </button>
+          </div>
+
+          <!-- Product Form (Add / Edit) -->
+          <div id="productFormContainer" class="hidden bg-black/60 border border-neutral-800 p-5 rounded-xl space-y-4">
+            <div class="flex justify-between items-center border-b border-neutral-800 pb-3">
+              <h5 id="formTitle" class="font-orbitron text-sm font-bold text-red-400">Cadastrar Produto</h5>
+              <button onclick="closeProductForm()" class="text-xs text-gray-400 hover:text-white">Cancelar</button>
+            </div>
+
+            <form id="productForm" onsubmit="saveProduct(event)" class="space-y-4">
+              <input type="hidden" id="editProductId">
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label class="block text-xs text-gray-400 mb-1">Título do Produto *</label>
+                  <input type="text" id="prodTitle" required class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-xs text-white focus:border-red-600">
+                </div>
+                <div>
+                  <label class="block text-xs text-gray-400 mb-1">Catálogo / Nomenclatura *</label>
+                  <select id="prodCatalogSelect" required class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-xs text-white focus:border-red-600">
+                    <!-- Dynamic Catalogs -->
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs text-gray-400 mb-1">Categoria *</label>
+                  <select id="prodCategory" required class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-xs text-white focus:border-red-600">
+                    <!-- Dynamic Categories -->
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs text-gray-400 mb-1">Material (Apenas PLA/PETG) *</label>
+                  <select id="prodMaterial" required class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-xs text-white focus:border-red-600">
+                    <option value="PLA Premium">PLA Premium (Alta Precisão / Decoração)</option>
+                    <option value="PETG Alta Resistência">PETG Alta Resistência (Uso Mecânico / Funcional)</option>
+                    <option value="PLA / PETG (À escolha)">PLA / PETG (À escolha do cliente)</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs text-gray-400 mb-1">Preço Unitário R$ (1 Unidade) *</label>
+                  <input type="number" step="0.01" id="prodPrice1" required class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-xs text-white focus:border-red-600">
+                </div>
+              </div>
+
+              <!-- Wholesale prices -->
+              <div class="p-3 bg-neutral-950 border border-neutral-800 rounded-xl space-y-2">
+                <span class="text-xs font-semibold text-red-400 block">Preços Promocionais por Encomenda / Atacado (Valor Unitário no Lote)</span>
+                <div class="grid grid-cols-3 gap-3">
+                  <div>
+                    <label class="block text-[11px] text-gray-400">30 Unidades (R$/un)</label>
+                    <input type="number" step="0.01" id="prodPrice30" required class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-xs text-white focus:border-red-600">
+                  </div>
+                  <div>
+                    <label class="block text-[11px] text-gray-400">50 Unidades (R$/un)</label>
+                    <input type="number" step="0.01" id="prodPrice50" required class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-xs text-white focus:border-red-600">
+                  </div>
+                  <div>
+                    <label class="block text-[11px] text-gray-400">100 Unidades (R$/un)</label>
+                    <input type="number" step="0.01" id="prodPrice100" required class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-xs text-white focus:border-red-600">
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs text-gray-400 mb-1">Descrição do Produto *</label>
+                <textarea id="prodDescription" rows="3" required class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-xs text-white focus:border-red-600"></textarea>
+              </div>
+
+              <!-- UPLOAD DE IMAGENS EXCLUSIVO EM PNG / ARQUIVOS LOCAIS -->
+              <div class="p-4 bg-neutral-950 border border-neutral-800 rounded-xl space-y-3">
+                <div class="flex justify-between items-center">
+                  <label class="block text-xs font-bold text-red-400 uppercase tracking-wider">
+                    Fotos do Produto em PNG *
+                  </label>
+                  <span class="text-[11px] text-gray-400">Pode anexar no mínimo 5 fotos por item!</span>
+                </div>
+
+                <!-- Input File Local -->
+                <div class="flex flex-col sm:flex-row gap-2">
+                  <label class="flex-1 flex flex-col items-center justify-center gap-2 bg-neutral-900 hover:bg-neutral-800/80 border-2 border-dashed border-red-600/40 hover:border-red-500 rounded-xl p-5 cursor-pointer text-xs text-gray-300 transition text-center">
+                    <div class="w-10 h-10 rounded-full bg-red-950/80 border border-red-600/60 flex items-center justify-center">
+                      <i data-lucide="upload-cloud" class="w-5 h-5 text-red-500"></i>
+                    </div>
+                    <div>
+                      <span class="font-bold text-white block">Clique aqui para selecionar os arquivos PNG</span>
+                      <span class="text-[11px] text-gray-400">Suporta PNG transparente, JPG e WebP</span>
+                    </div>
+                    <input type="file" id="localFileInput" accept="image/png, image/jpeg, image/webp" multiple onchange="handleLocalFiles(event)" class="hidden">
+                  </label>
+                </div>
+
+                <!-- Lista de Fotos Adicionadas (Preview com fundo transparente) -->
+                <div>
+                  <div class="flex justify-between items-center mb-2">
+                    <span class="text-[11px] text-gray-400 font-semibold">Imagens Anexadas (<span id="imgCountLabel">0</span>):</span>
+                    <button type="button" onclick="clearAllTempImages()" class="text-[10px] text-red-400 hover:underline">Limpar todas</button>
+                  </div>
+                  <div id="imagePreviewContainer" class="flex flex-wrap gap-2 min-h-[75px] bg-neutral-900/80 p-2.5 rounded-lg border border-neutral-800">
+                    <!-- Dynamic Thumbnails -->
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex justify-end gap-2 pt-2">
+                <button type="button" onclick="closeProductForm()" class="px-4 py-2 bg-neutral-800 text-gray-300 rounded-lg text-xs font-semibold">Cancelar</button>
+                <button type="submit" class="px-5 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-semibold shadow-[0_0_10px_rgba(255,0,51,0.4)]">Salvar Produto</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Table of items -->
+          <div class="border border-neutral-800 rounded-xl overflow-hidden bg-black/40">
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs text-gray-300">
+                <thead class="bg-neutral-950 text-gray-400 border-b border-neutral-800 uppercase tracking-wider text-[10px]">
+                  <tr>
+                    <th class="p-3">Foto</th>
+                    <th class="p-3">Produto</th>
+                    <th class="p-3">Catálogo</th>
+                    <th class="p-3">Material</th>
+                    <th class="p-3">Preço (1un)</th>
+                    <th class="p-3">Atacado (30/50/100un)</th>
+                    <th class="p-3 text-right">Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="adminProductsTableBody" class="divide-y divide-neutral-800">
+                  <!-- JS Inserted rows -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: CATALOGS MANAGEMENT -->
+        <div id="tabCatalogsContent" class="hidden space-y-6">
+          <div class="bg-black/60 border border-neutral-800 p-5 rounded-xl space-y-4 max-w-xl">
+            <h4 class="text-sm font-semibold text-gray-200 border-b border-neutral-800 pb-2">Criar Nova Nomenclatura / Catálogo</h4>
+            
+            <form onsubmit="saveNewCatalog(event)" class="flex gap-2">
+              <input type="text" id="newCatalogInput" placeholder="Ex: Chaveiros, Copos Personalizados, Colecionáveis" required 
+                     class="flex-1 bg-neutral-950 border border-neutral-800 rounded-lg px-3 py-2 text-xs text-white focus:border-red-600">
+              <button type="submit" class="bg-red-600 hover:bg-red-700 text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-[0_0_10px_rgba(255,0,51,0.3)] transition whitespace-nowrap">
+                Adicionar Catálogo
+              </button>
+            </form>
+          </div>
+
+          <div class="border border-neutral-800 rounded-xl overflow-hidden bg-black/40 max-w-2xl">
+            <table class="w-full text-left text-xs text-gray-300">
+              <thead class="bg-neutral-950 text-gray-400 border-b border-neutral-800 uppercase tracking-wider text-[10px]">
+                <tr>
+                  <th class="p-3">Nome da Nomenclatura</th>
+                  <th class="p-3">Nº de Produtos</th>
+                  <th class="p-3 text-right">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="adminCatalogsTableBody" class="divide-y divide-neutral-800">
+                <!-- JS Inserted catalog rows -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TAB 3: CATEGORIES MANAGEMENT -->
+        <div id="tabCategoriesContent" class="hidden space-y-6">
+          <div class="bg-black/60 border border-neutral-800 p-5 rounded-xl space-y-4 max-w-xl">
+            <h4 class="text-sm font-semibold text-gray-200 border-b border-neutral-800 pb-2">Gerenciar Categorias do Catálogo</h4>
+            
+            <form onsubmit="saveCategory(event)" class="flex gap-2">
+              <input type="text" id="newCategoryInput" placeholder="Nome da nova categoria (ex: Lembrancinhas, Desk Setup)" required 
+                     class="flex-1 bg-neutral-950 border border-neutral-800 rounded-lg px-3 py-2 text-xs text-white focus:border-red-600">
+              <button type="submit" class="bg-red-600 hover:bg-red-700 text-white text-xs font-semibold px-4 py-2 rounded-lg shadow-[0_0_10px_rgba(255,0,51,0.3)] transition whitespace-nowrap">
+                Adicionar Categoria
+              </button>
+            </form>
+          </div>
+
+          <div class="border border-neutral-800 rounded-xl overflow-hidden bg-black/40 max-w-xl">
+            <table class="w-full text-left text-xs text-gray-300">
+              <thead class="bg-neutral-950 text-gray-400 border-b border-neutral-800 uppercase tracking-wider text-[10px]">
+                <tr>
+                  <th class="p-3">Nome da Categoria</th>
+                  <th class="p-3 text-right">Ações</th>
+                </tr>
+              </thead>
+              <tbody id="adminCategoriesTableBody" class="divide-y divide-neutral-800">
+                <!-- JS Inserted category rows -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TAB 4: STORE SETTINGS -->
+        <div id="tabStoreContent" class="hidden space-y-6">
+          <form onsubmit="saveStoreSettings(event)" class="space-y-4 max-w-2xl">
+            <h4 class="text-sm font-semibold text-gray-200 border-b border-neutral-800 pb-2">Personalização Global da WillMakerr3D</h4>
+            
+            <div>
+              <label class="block text-xs text-gray-400 mb-1">Nome da Loja</label>
+              <input type="text" id="settingStoreName" class="w-full bg-neutral-950 border border-neutral-800 rounded-lg p-2.5 text-xs text-white">
+            </div>
+
+            <div>
+              <label class="block text-xs text-gray-400 mb-1">Título do Banner Principal (Hero)</label>
+              <input type="text" id="settingHeroTitle" class="w-full bg-neutral-950 border border-neutral-800 rounded-lg p-2.5 text-xs text-white">
+            </div>
+
+            <div>
+              <label class="block text-xs text-gray-400 mb-1">Subtítulo do Banner</label>
+              <textarea id="settingHeroSubtitle" rows="2" class="w-full bg-neutral-950 border border-neutral-800 rounded-lg p-2.5 text-xs text-white"></textarea>
+            </div>
+
+            <div>
+              <label class="block text-xs text-gray-400 mb-1">URL da Imagem de Fundo do Banner</label>
+              <input type="text" id="settingHeroBg" class="w-full bg-neutral-950 border border-neutral-800 rounded-lg p-2.5 text-xs text-white">
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+              <div>
+                <label class="block text-xs text-gray-400 mb-1">Instagram (@usuario)</label>
+                <input type="text" id="settingInstagram" placeholder="@willmakerr3d" class="w-full bg-neutral-950 border border-neutral-800 rounded-lg p-2.5 text-xs text-white">
+              </div>
+              <div>
+                <label class="block text-xs text-gray-400 mb-1">WhatsApp / Telefone (com DDD)</label>
+                <input type="text" id="settingWhatsapp" placeholder="5531999999999" class="w-full bg-neutral-950 border border-neutral-800 rounded-lg p-2.5 text-xs text-white">
+              </div>
+            </div>
+
+            <div class="pt-4">
+              <button type="submit" class="bg-red-600 hover:bg-red-700 text-white text-xs font-semibold px-6 py-2.5 rounded-lg shadow-[0_0_15px_rgba(255,0,51,0.4)] transition">
+                Salvar Configurações da Loja
+              </button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // INITIAL DATA
+    const initialCatalogs = [
+      { id: "cat-main", name: "Catálogo Geral 3D" },
+      { id: "cat-chaveiros", name: "Chaveiros Personalizados" },
+      { id: "cat-copos", name: "Copos & Canecas 3D" },
+      { id: "cat-geek", name: "Linha Geek & Animes" },
+      { id: "cat-tech", name: "Setup & Tecnologia" }
+    ];
+
+    const initialCategories = [
+      "Action Figures & Estátuas",
+      "Suportes Gamer & Tech",
+      "Decoração & Utilidades",
+      "Articulados & Flexíveis",
+      "Cosplay & Props",
+      "Lembrancinhas & Brindes"
+    ];
+
+    const initialProducts = [
+      {
+        id: "prod-chaveiro-1",
+        catalogId: "cat-chaveiros",
+        title: "Chaveiro 3D Logo WillMaker",
+        category: "Lembrancinhas & Brindes",
+        material: "PLA Premium",
+        price1: 15.00,
+        price30: 8.50,
+        price50: 6.90,
+        price100: 5.50,
+        description: "Chaveiro personalizado em 3D com argola metálica inclusa. Excelente opção em PLA para lembrancinhas de eventos e brindes corporativos.",
+        images: [
+          "https://images.unsplash.com/photo-1582142407894-ec85a1260aee?auto=format&fit=crop&w=800&q=80"
+        ]
+      },
+      {
+        id: "prod-copo-1",
+        catalogId: "cat-copos",
+        title: "Copo Térmico Estilizado Cyberpunk",
+        category: "Decoração & Utilidades",
+        material: "PETG Alta Resistência",
+        price1: 69.90,
+        price30: 45.00,
+        price50: 39.00,
+        price100: 32.00,
+        description: "Capa de copo decorativa produzida em PETG alimentício de alta resistência a impactos. Design moderno e empunhadura firme.",
+        images: [
+          "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80"
+        ]
+      },
+      {
+        id: "prod-1",
+        catalogId: "cat-main",
+        title: "Suporte Headset Cyber Gamer",
+        category: "Suportes Gamer & Tech",
+        material: "PETG Alta Resistência",
+        price1: 89.90,
+        price30: 55.00,
+        price50: 48.00,
+        price100: 42.00,
+        description: "Suporte de alta durabilidade para auscultadores/headsets gamer. Design futurista otimizado para apoio seguro do arco sem deformar as almofadas.",
+        images: [
+          "https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80"
+        ]
+      },
+      {
+        id: "prod-2",
+        catalogId: "cat-geek",
+        title: "Action Figure Samurai Cyberpunk",
+        category: "Action Figures & Estátuas",
+        material: "PLA Premium",
+        price1: 149.90,
+        price30: 98.00,
+        price50: 89.00,
+        price100: 79.00,
+        description: "Estátua rica em detalhes impressa em PLA de altíssima resolução de camada (0.12mm). Ideal para colecionadores e pintura artística.",
+        images: [
+          "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=800&q=80"
+        ]
+      },
+      {
+        id: "prod-3",
+        catalogId: "cat-main",
+        title: "Dragão Articulado Flexível 45cm",
+        category: "Articulados & Flexíveis",
+        material: "PLA Premium",
+        price1: 79.90,
+        price30: 45.00,
+        price50: 39.00,
+        price100: 32.00,
+        description: "Impresso em peça única sem necessidade de montagem. As articulações fluídas garantem movimento suave e excelente apelo visual.",
+        images: [
+          "https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?auto=format&fit=crop&w=800&q=80",
+          "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&q=80"
+        ]
+      }
+    ];
+
+    // ADMIN PASSWORD
+    const ADMIN_PASSWORD_HASH = "WillaryMendes@#";
+
+    // STATE MANAGEMENT
+    let catalogsList = [];
+    let activeCatalogId = "cat-main";
+    let products = [];
+    let categoriesList = [];
+    let currentCategory = "todos";
+    let isAdminLoggedIn = false;
+    let selectedQtyModal = 1;
+    let currentProductModal = null;
+    let tempFormImages = []; // Armazena temporariamente as imagens do formulário em edição
+
+    let storeSettings = {
+      storeName: "WillMakerr3D",
+      heroTitle: "Impressões 3D sob medida em PLA & PETG",
+      heroSubtitle: "Confira os nossos catálogos com colecionáveis, itens funcionais e peças personalizadas. Atendemos pedidos avulsos e grandes encomendas com valores exclusivos para atacado!",
+      heroBg: "https://images.unsplash.com/photo-1631541909061-71e349d1f203?auto=format&fit=crop&w=1600&q=80",
+      instagram: "@willmakerr3d",
+      whatsapp: "5531999999999"
+    };
+
+    // INIT APP
+    window.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("yearSpan").innerText = new Date().getFullYear();
+      loadDataFromStorage();
+      renderCatalogSelectors();
+      renderCategoryFilters();
+      renderProducts();
+      updateStoreInfoUI();
+      lucide.createIcons();
+    });
+
+    // STORAGE LOAD & SAVE
+    function loadDataFromStorage() {
+      const storedCats = localStorage.getItem("willmakerr_catalogs");
+      if (storedCats) {
+        catalogsList = JSON.parse(storedCats);
+      } else {
+        catalogsList = initialCatalogs;
+        localStorage.setItem("willmakerr_catalogs", JSON.stringify(catalogsList));
+      }
+
+      const storedProds = localStorage.getItem("willmakerr_products");
+      if (storedProds) {
+        products = JSON.parse(storedProds);
+      } else {
+        products = initialProducts;
+        localStorage.setItem("willmakerr_products", JSON.stringify(products));
+      }
+
+      const storedCategories = localStorage.getItem("willmakerr_categories");
+      if (storedCategories) {
+        categoriesList = JSON.parse(storedCategories);
+      } else {
+        categoriesList = initialCategories;
+        localStorage.setItem("willmakerr_categories", JSON.stringify(categoriesList));
+      }
+
+      const storedSettings = localStorage.getItem("willmakerr_settings");
+      if (storedSettings) {
+        storeSettings = JSON.parse(storedSettings);
+      }
+    }
+
+    function saveCatalogsToStorage() {
+      localStorage.setItem("willmakerr_catalogs", JSON.stringify(catalogsList));
+      renderCatalogSelectors();
+    }
+
+    function saveProductsToStorage() {
+      localStorage.setItem("willmakerr_products", JSON.stringify(products));
+    }
+
+    function saveCategoriesToStorage() {
+      localStorage.setItem("willmakerr_categories", JSON.stringify(categoriesList));
+      renderCategoryFilters();
+      populateCategorySelectOptions();
+    }
+
+    function saveSettingsToStorage() {
+      localStorage.setItem("willmakerr_settings", JSON.stringify(storeSettings));
+      updateStoreInfoUI();
+    }
+
+    function renderCatalogSelectors() {
+      const headerSelect = document.getElementById("headerCatalogSelect");
+      const mobileSelect = document.getElementById("mobileCatalogSelect");
+
+      const optionsHtml = catalogsList.map(c => `
+        <option value="${c.id}" ${c.id === activeCatalogId ? 'selected' : ''}>${c.name}</option>
+      `).join('');
+
+      headerSelect.innerHTML = optionsHtml;
+      mobileSelect.innerHTML = optionsHtml;
+    }
+
+    function changeActiveCatalog(id) {
+      activeCatalogId = id;
+      renderCatalogSelectors();
+      renderProducts();
+    }
+
+    function updateStoreInfoUI() {
+      document.getElementById("heroTitle").innerHTML = storeSettings.heroTitle.replace("PLA & PETG", '<span class="text-red-600 neon-text-red">PLA & PETG</span>');
+      document.getElementById("heroSubtitle").innerText = storeSettings.heroSubtitle;
+      document.getElementById("heroBannerBg").style.backgroundImage = `url('${storeSettings.heroBg}')`;
+
+      document.getElementById("instaHandleHeader").innerText = storeSettings.instagram;
+      document.getElementById("btnInstaHeader").href = `https://instagram.com/${storeSettings.instagram.replace('@','')}`;
+      document.getElementById("btnWhatsHeader").href = `https://wa.me/${storeSettings.whatsapp}`;
+
+      document.getElementById("footerInstaText").innerText = storeSettings.instagram;
+      document.getElementById("footerInstaLink").href = `https://instagram.com/${storeSettings.instagram.replace('@','')}`;
+      document.getElementById("footerWhatsText").innerText = `+${storeSettings.whatsapp}`;
+      document.getElementById("footerWhatsLink").href = `https://wa.me/${storeSettings.whatsapp}`;
+    }
+
+    // CATEGORY FILTERS RENDER
+    function renderCategoryFilters() {
+      const container = document.getElementById("categoryFilterContainer");
+      const filterItems = ["todos", ...categoriesList, "atacado"];
+
+      container.innerHTML = filterItems.map(cat => {
+        const isSelected = currentCategory === cat;
+        const label = cat === "todos" ? "Todos os Produtos" : (cat === "atacado" ? "🔥 Tabela Atacado" : cat);
+        const activeClasses = isSelected 
+          ? "bg-red-600 text-white shadow-[0_0_12px_rgba(255,0,51,0.5)] border-red-500" 
+          : "bg-neutral-900 text-gray-400 hover:text-white border-neutral-800 hover:border-neutral-700";
+        
+        return `<button onclick="filterCategory('${cat}')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold border transition ${activeClasses}">${label}</button>`;
+      }).join('');
+    }
+
+    function filterCategory(cat) {
+      currentCategory = cat;
+      renderCategoryFilters();
+      renderProducts();
+    }
+
+    function handleSearch() {
+      renderProducts();
+    }
+
+    // RENDER PRODUCTS
+    function renderProducts() {
+      const grid = document.getElementById("productsGrid");
+      const emptyState = document.getElementById("emptyState");
+      const searchVal = document.getElementById("searchInput").value.toLowerCase();
+
+      let filtered = products.filter(p => {
+        const matchCatalog = p.catalogId === activeCatalogId;
+        const matchCat = currentCategory === "todos" || currentCategory === "atacado" || p.category === currentCategory;
+        const matchSearch = p.title.toLowerCase().includes(searchVal) || p.description.toLowerCase().includes(searchVal) || p.material.toLowerCase().includes(searchVal);
+        return matchCatalog && matchCat && matchSearch;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = "";
+        emptyState.classList.remove("hidden");
+        return;
+      }
+
+      emptyState.classList.add("hidden");
+      grid.innerHTML = filtered.map(p => {
+        const mainImg = (p.images && p.images.length > 0) ? p.images[0] : "https://images.unsplash.com/photo-1631541909061-71e349d1f203?auto=format&fit=crop&w=600&q=80";
+        
+        return `
+          <div class="glass-card rounded-2xl overflow-hidden flex flex-col justify-between group transition duration-300">
+            <div>
+              <!-- Image container adaptada para PNG transparente -->
+              <div class="relative h-56 png-checkerboard flex items-center justify-center overflow-hidden cursor-pointer" onclick="openProductModal('${p.id}')">
+                <img src="${mainImg}" alt="${p.title}" class="max-h-full max-w-full object-contain p-2 group-hover:scale-105 transition duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                
+                <span class="absolute top-3 left-3 bg-black/80 backdrop-blur-md border border-red-900/50 text-red-400 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
+                  ${p.material}
+                </span>
+
+                ${p.images && p.images.length > 1 ? `
+                  <span class="absolute top-3 right-3 bg-black/80 backdrop-blur-md text-gray-300 text-[10px] px-2 py-0.5 rounded flex items-center gap-1">
+                    <i data-lucide="layers" class="w-3 h-3"></i> ${p.images.length} fotos
+                  </span>
+                ` : ''}
+              </div>
+
+              <!-- Info -->
+              <div class="p-4 space-y-2">
+                <span class="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">${p.category}</span>
+                <h3 class="font-orbitron font-bold text-base text-white group-hover:text-red-500 transition cursor-pointer" onclick="openProductModal('${p.id}')">
+                  ${p.title}
+                </h3>
+                <p class="text-xs text-gray-400 line-clamp-2 leading-relaxed">
+                  ${p.description}
+                </p>
+              </div>
+            </div>
+
+            <!-- Price & Actions -->
+            <div class="p-4 pt-0 space-y-3">
+              <div class="bg-black/60 border border-neutral-800 rounded-lg p-2 text-[11px] flex items-center justify-between text-gray-400">
+                <span>Atacado (100un):</span>
+                <span class="font-bold text-red-400">R$ ${p.price100.toFixed(2)} /un</span>
+              </div>
+
+              <div class="flex items-center justify-between pt-1">
+                <div>
+                  <span class="text-[10px] text-gray-500 block leading-none">A partir de</span>
+                  <span class="text-lg font-extrabold text-white font-orbitron">R$ ${p.price1.toFixed(2)}</span>
+                </div>
+                <button onclick="openProductModal('${p.id}')" class="bg-red-600 hover:bg-red-700 text-white p-2.5 rounded-xl shadow-[0_0_10px_rgba(255,0,51,0.3)] transition">
+                  <i data-lucide="eye" class="w-4 h-4"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    // MODAL: PRODUCT DETAILS & WHOLESALE CALCULATOR
+    function openProductModal(id) {
+      const prod = products.find(p => p.id === id);
+      if (!prod) return;
+
+      currentProductModal = prod;
+
+      const modalContent = document.getElementById("modalProductContent");
+      
+      let galleryHtml = prod.images.map((img) => `
+        <div onclick="setMainModalImage('${img}')" class="w-16 h-16 png-checkerboard flex items-center justify-center rounded-lg border border-neutral-800 cursor-pointer hover:border-red-600 transition overflow-hidden flex-shrink-0">
+          <img src="${img}" alt="Preview" class="max-h-full max-w-full object-contain">
+        </div>
+      `).join('');
+
+      modalContent.innerHTML = `
+        <div class="p-6">
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <span class="text-xs font-bold text-red-500 uppercase tracking-widest">${prod.category} • ${prod.material}</span>
+              <h2 class="font-orbitron text-2xl font-black text-white mt-1">${prod.title}</h2>
+            </div>
+            <button onclick="closeProductModal()" class="text-gray-400 hover:text-white p-1 rounded-lg bg-neutral-800">
+              <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Galeria de Fotos em alta definição -->
+            <div>
+              <div class="h-64 sm:h-72 png-checkerboard rounded-xl flex items-center justify-center overflow-hidden border border-neutral-800 mb-3">
+                <img id="modalMainImg" src="${prod.images[0]}" class="max-h-full max-w-full object-contain p-3">
+              </div>
+              <div class="flex gap-2 overflow-x-auto pb-2">
+                ${galleryHtml}
+              </div>
+            </div>
+
+            <!-- Informações e Seletor de Quantidade de Atacado -->
+            <div class="space-y-4">
+              <p class="text-xs text-gray-300 leading-relaxed bg-neutral-950 p-3 rounded-xl border border-neutral-800">
+                ${prod.description}
+              </p>
+
+              <!-- SELETOR RÁPIDO DE QUANTIDADES DE ATACADO -->
+              <div class="bg-black/60 border border-red-900/30 rounded-xl p-3 space-y-3">
+                <div class="flex justify-between items-center">
+                  <span class="text-xs font-bold text-red-400 uppercase tracking-wider block">Escolha a Quantidade do Pedido</span>
+                  <span class="text-[10px] text-gray-400">Atacado com Desconto</span>
+                </div>
+
+                <!-- Botões de seleção rápida -->
+                <div class="grid grid-cols-4 gap-2 text-center text-xs">
+                  <button type="button" onclick="selectModalQty(1)" id="btnQty1" class="p-2 rounded-lg border transition text-center">
+                    <span class="block font-bold">1 un</span>
+                    <span class="text-[10px] opacity-80">R$ ${prod.price1.toFixed(2)}/un</span>
+                  </button>
+                  <button type="button" onclick="selectModalQty(30)" id="btnQty30" class="p-2 rounded-lg border transition text-center">
+                    <span class="block font-bold">30 un</span>
+                    <span class="text-[10px] opacity-80">R$ ${prod.price30.toFixed(2)}/un</span>
+                  </button>
+                  <button type="button" onclick="selectModalQty(50)" id="btnQty50" class="p-2 rounded-lg border transition text-center">
+                    <span class="block font-bold">50 un</span>
+                    <span class="text-[10px] opacity-80">R$ ${prod.price50.toFixed(2)}/un</span>
+                  </button>
+                  <button type="button" onclick="selectModalQty(100)" id="btnQty100" class="p-2 rounded-lg border transition text-center">
+                    <span class="block font-bold">100 un</span>
+                    <span class="text-[10px] opacity-80">R$ ${prod.price100.toFixed(2)}/un</span>
+                  </button>
+                </div>
+
+                <!-- Campo de ajuste manual de quantidade -->
+                <div class="flex items-center justify-between pt-2 border-t border-neutral-800/60">
+                  <span class="text-xs text-gray-400">Ou digite uma quantidade exata:</span>
+                  <div class="flex items-center bg-neutral-900 border border-neutral-700 rounded-lg overflow-hidden">
+                    <button type="button" onclick="changeCustomQty(-1)" class="px-2.5 py-1 text-gray-300 hover:bg-neutral-800 text-sm font-bold">-</button>
+                    <input type="number" id="customQtyInput" min="1" value="${selectedQtyModal}" oninput="handleManualQtyChange(this.value)" class="w-14 text-center bg-transparent text-xs font-bold text-white focus:outline-none">
+                    <button type="button" onclick="changeCustomQty(1)" class="px-2.5 py-1 text-gray-300 hover:bg-neutral-800 text-sm font-bold">+</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Calculadora e Resumo -->
+              <div id="modalCalcBox" class="bg-neutral-950 border border-neutral-800 p-4 rounded-xl flex items-center justify-between">
+              </div>
+
+              <!-- Botão Enviar Pedido WhatsApp -->
+              <button onclick="sendWhatsappOrder()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl shadow-[0_0_15px_rgba(34,197,94,0.3)] transition flex items-center justify-center gap-2 text-sm">
+                <i data-lucide="message-square" class="w-5 h-5"></i>
+                <span id="whatsBtnText">Fazer Pedido (${selectedQtyModal} un) via WhatsApp</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      updateModalCalc();
+      document.getElementById("productModal").classList.remove("hidden");
+      lucide.createIcons();
+    }
+
+    function setMainModalImage(url) {
+      document.getElementById("modalMainImg").src = url;
+    }
+
+    function selectModalQty(qty) {
+      selectedQtyModal = parseInt(qty) || 1;
+      const input = document.getElementById("customQtyInput");
+      if (input) input.value = selectedQtyModal;
+      updateModalCalc();
+    }
+
+    function changeCustomQty(delta) {
+      selectedQtyModal = Math.max(1, selectedQtyModal + delta);
+      const input = document.getElementById("customQtyInput");
+      if (input) input.value = selectedQtyModal;
+      updateModalCalc();
+    }
+
+    function handleManualQtyChange(val) {
+      const parsed = parseInt(val);
+      if (!isNaN(parsed) && parsed >= 1) {
+        selectedQtyModal = parsed;
+      } else {
+        selectedQtyModal = 1;
+      }
+      updateModalCalc();
+    }
+
+    function updateModalCalc() {
+      if (!currentProductModal) return;
+
+      // Atualiza estilo dos botões rápidos
+      const btn1 = document.getElementById("btnQty1");
+      const btn30 = document.getElementById("btnQty30");
+      const btn50 = document.getElementById("btnQty50");
+      const btn100 = document.getElementById("btnQty100");
+
+      const activeClass = "bg-red-950 border-red-600 text-white shadow-[0_0_10px_rgba(255,0,51,0.3)]";
+      const inactiveClass = "bg-neutral-900 border-neutral-800 text-gray-400 hover:text-white";
+
+      if (btn1) btn1.className = `p-2 rounded-lg border transition text-center ${selectedQtyModal === 1 ? activeClass : inactiveClass}`;
+      if (btn30) btn30.className = `p-2 rounded-lg border transition text-center ${selectedQtyModal === 30 ? activeClass : inactiveClass}`;
+      if (btn50) btn50.className = `p-2 rounded-lg border transition text-center ${selectedQtyModal === 50 ? activeClass : inactiveClass}`;
+      if (btn100) btn100.className = `p-2 rounded-lg border transition text-center ${selectedQtyModal === 100 ? activeClass : inactiveClass}`;
+
+      // Determina valor unitário aplicável conforme o volume do lote
+      let unitPrice = currentProductModal.price1;
+      let tierLabel = "Valor individual padrão";
+
+      if (selectedQtyModal >= 100) {
+        unitPrice = currentProductModal.price100;
+        tierLabel = "Desconto do lote de 100+ un";
+      } else if (selectedQtyModal >= 50) {
+        unitPrice = currentProductModal.price50;
+        tierLabel = "Desconto do lote de 50+ un";
+      } else if (selectedQtyModal >= 30) {
+        unitPrice = currentProductModal.price30;
+        tierLabel = "Desconto do lote de 30+ un";
+      }
+
+      const total = unitPrice * selectedQtyModal;
+      const calcBox = document.getElementById("modalCalcBox");
+      const whatsBtnText = document.getElementById("whatsBtnText");
+
+      if (calcBox) {
+        calcBox.innerHTML = `
+          <div>
+            <span class="text-xs text-gray-400 block">Quantidade: <strong class="text-white font-bold">${selectedQtyModal} unidade(s)</strong></span>
+            <span class="text-[11px] text-red-400 font-medium block">${tierLabel}</span>
+            <span class="text-[10px] text-gray-500">Unitário no lote: R$ ${unitPrice.toFixed(2)}</span>
+          </div>
+          <div class="text-right">
+            <span class="text-[10px] uppercase text-gray-400 font-semibold block">Total Estimado</span>
+            <span class="text-xl font-orbitron font-extrabold text-red-500">R$ ${total.toFixed(2)}</span>
+          </div>
+        `;
+      }
+
+      if (whatsBtnText) {
+        whatsBtnText.innerText = `Fazer Pedido (${selectedQtyModal} un) via WhatsApp`;
+      }
+    }
+
+    function closeProductModal() {
+      document.getElementById("productModal").classList.add("hidden");
+    }
+
+    function sendWhatsappOrder() {
+      if (!currentProductModal) return;
+      let unitPrice = currentProductModal.price1;
+      if (selectedQtyModal >= 100) unitPrice = currentProductModal.price100;
+      else if (selectedQtyModal >= 50) unitPrice = currentProductModal.price50;
+      else if (selectedQtyModal >= 30) unitPrice = currentProductModal.price30;
+      const total = unitPrice * selectedQtyModal;
+
+      const msg = `Olá WillMakerr3D! Gostaria de fazer um pedido/orçamento:\n\n` +
+                  `*Produto:* ${currentProductModal.title}\n` +
+                  `*Material:* ${currentProductModal.material}\n` +
+                  `*Quantidade:* ${selectedQtyModal} unidade(s)\n` +
+                  `*Valor Unitário Lote:* R$ ${unitPrice.toFixed(2)}\n` +
+                  `*Valor Estimado Total:* R$ ${total.toFixed(2)}\n\n` +
+                  `Poderia confirmar a disponibilidade e o prazo de produção?`;
+
+      const encoded = encodeURIComponent(msg);
+      window.open(`https://wa.me/${storeSettings.whatsapp}?text=${encoded}`, '_blank');
+    }
+
+    // AUTHENTICATION LOGIC
+    function toggleAdminModal() {
+      if (isAdminLoggedIn) {
+        openAdminPanel();
+      } else {
+        document.getElementById("adminAuthModal").classList.remove("hidden");
+        document.getElementById("adminPasswordInput").value = "";
+        document.getElementById("loginError").classList.add("hidden");
+      }
+    }
+
+    function closeAdminAuthModal() {
+      document.getElementById("adminAuthModal").classList.add("hidden");
+    }
+
+    function handleAdminLogin(e) {
+      e.preventDefault();
+      const pwd = document.getElementById("adminPasswordInput").value;
+      if (pwd === ADMIN_PASSWORD_HASH) {
+        isAdminLoggedIn = true;
+        closeAdminAuthModal();
+        openAdminPanel();
+      } else {
+        document.getElementById("loginError").classList.remove("hidden");
+      }
+    }
+
+    // ADMIN PANEL CONTROL
+    function openAdminPanel() {
+      document.getElementById("adminPanelModal").classList.remove("hidden");
+      populateCatalogSelectOptions();
+      populateCategorySelectOptions();
+      renderAdminProductsTable();
+      renderAdminCatalogsTable();
+      renderAdminCategoriesTable();
+      populateStoreSettingsForm();
+      switchAdminTab('products');
+    }
+
+    function closeAdminPanel() {
+      document.getElementById("adminPanelModal").classList.add("hidden");
+    }
+
+    function switchAdminTab(tab) {
+      const btnProducts = document.getElementById("tabBtnProducts");
+      const btnCatalogs = document.getElementById("tabBtnCatalogs");
+      const btnCategories = document.getElementById("tabBtnCategories");
+      const btnStore = document.getElementById("tabBtnStore");
+
+      const contentProducts = document.getElementById("tabProductsContent");
+      const contentCatalogs = document.getElementById("tabCatalogsContent");
+      const contentCategories = document.getElementById("tabCategoriesContent");
+      const contentStore = document.getElementById("tabStoreContent");
+
+      btnProducts.className = "py-3 px-4 text-xs font-semibold border-b-2 border-transparent text-gray-400 hover:text-gray-200 flex items-center gap-2 whitespace-nowrap";
+      btnCatalogs.className = "py-3 px-4 text-xs font-semibold border-b-2 border-transparent text-gray-400 hover:text-gray-200 flex items-center gap-2 whitespace-nowrap";
+      btnCategories.className = "py-3 px-4 text-xs font-semibold border-b-2 border-transparent text-gray-400 hover:text-gray-200 flex items-center gap-2 whitespace-nowrap";
+      btnStore.className = "py-3 px-4 text-xs font-semibold border-b-2 border-transparent text-gray-400 hover:text-gray-200 flex items-center gap-2 whitespace-nowrap";
+
+      contentProducts.classList.add("hidden");
+      contentCatalogs.classList.add("hidden");
+      contentCategories.classList.add("hidden");
+      contentStore.classList.add("hidden");
+
+      if (tab === 'products') {
+        btnProducts.className = "py-3 px-4 text-xs font-semibold border-b-2 border-red-600 text-white flex items-center gap-2 whitespace-nowrap";
+        contentProducts.classList.remove("hidden");
+      } else if (tab === 'catalogs') {
+        btnCatalogs.className = "py-3 px-4 text-xs font-semibold border-b-2 border-red-600 text-white flex items-center gap-2 whitespace-nowrap";
+        contentCatalogs.classList.remove("hidden");
+      } else if (tab === 'categories') {
+        btnCategories.className = "py-3 px-4 text-xs font-semibold border-b-2 border-red-600 text-white flex items-center gap-2 whitespace-nowrap";
+        contentCategories.classList.remove("hidden");
+      } else {
+        btnStore.className = "py-3 px-4 text-xs font-semibold border-b-2 border-red-600 text-white flex items-center gap-2 whitespace-nowrap";
+        contentStore.classList.remove("hidden");
+      }
+    }
+
+    // FORM & UPLOAD DE IMAGENS LOCAL (PNG COM TRANSPARÊNCIA E ARQUIVOS LOCAIS)
+    function handleLocalFiles(event) {
+      const files = Array.from(event.target.files);
+      if (files.length === 0) return;
+
+      files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          tempFormImages.push(e.target.result);
+          renderImagePreviews();
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function removeTempImage(index) {
+      tempFormImages.splice(index, 1);
+      renderImagePreviews();
+    }
+
+    function clearAllTempImages() {
+      tempFormImages = [];
+      renderImagePreviews();
+    }
+
+    function renderImagePreviews() {
+      const container = document.getElementById("imagePreviewContainer");
+      document.getElementById("imgCountLabel").innerText = tempFormImages.length;
+
+      if (tempFormImages.length === 0) {
+        container.innerHTML = `<span class="text-xs text-gray-500 italic flex items-center justify-center w-full py-2">Nenhuma foto adicionada ainda. Faça o upload das imagens PNG acima!</span>`;
+        return;
+      }
+
+      container.innerHTML = tempFormImages.map((img, idx) => `
+        <div class="relative w-16 h-16 png-checkerboard border border-neutral-700 rounded-lg overflow-hidden flex items-center justify-center group flex-shrink-0">
+          <img src="${img}" class="max-h-full max-w-full object-contain">
+          <button type="button" onclick="removeTempImage(${idx})" class="absolute top-0.5 right-0.5 bg-red-600 text-white p-0.5 rounded-full opacity-90 hover:bg-red-700 transition">
+            <i data-lucide="x" class="w-3 h-3"></i>
+          </button>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function openProductForm() {
+      document.getElementById("editProductId").value = "";
+      document.getElementById("productForm").reset();
+      tempFormImages = [];
+      renderImagePreviews();
+      populateCatalogSelectOptions();
+      populateCategorySelectOptions();
+      document.getElementById("formTitle").innerText = "Cadastrar Novo Produto";
+      document.getElementById("productFormContainer").classList.remove("hidden");
+    }
+
+    function closeProductForm() {
+      document.getElementById("productFormContainer").classList.add("hidden");
+    }
+
+    function editProduct(id) {
+      const p = products.find(item => item.id === id);
+      if (!p) return;
+
+      populateCatalogSelectOptions();
+      populateCategorySelectOptions();
+      document.getElementById("editProductId").value = p.id;
+      document.getElementById("prodTitle").value = p.title;
+      document.getElementById("prodCatalogSelect").value = p.catalogId || catalogsList[0].id;
+      document.getElementById("prodCategory").value = p.category;
+      document.getElementById("prodMaterial").value = p.material;
+      document.getElementById("prodPrice1").value = p.price1;
+      document.getElementById("prodPrice30").value = p.price30;
+      document.getElementById("prodPrice50").value = p.price50;
+      document.getElementById("prodPrice100").value = p.price100;
+      document.getElementById("prodDescription").value = p.description;
+      
+      tempFormImages = p.images ? [...p.images] : [];
+      renderImagePreviews();
+
+      document.getElementById("formTitle").innerText = "Editar Produto";
+      document.getElementById("productFormContainer").classList.remove("hidden");
+    }
+
+    function saveProduct(e) {
+      e.preventDefault();
+
+      if (tempFormImages.length === 0) {
+        alert("Por favor, selecione pelo menos 1 imagem PNG do produto!");
+        return;
+      }
+
+      const editId = document.getElementById("editProductId").value;
+      const title = document.getElementById("prodTitle").value;
+      const catalogId = document.getElementById("prodCatalogSelect").value;
+      const category = document.getElementById("prodCategory").value;
+      const material = document.getElementById("prodMaterial").value;
+      const price1 = parseFloat(document.getElementById("prodPrice1").value);
+      const price30 = parseFloat(document.getElementById("prodPrice30").value);
+      const price50 = parseFloat(document.getElementById("prodPrice50").value);
+      const price100 = parseFloat(document.getElementById("prodPrice100").value);
+      const description = document.getElementById("prodDescription").value;
+
+      if (editId) {
+        const index = products.findIndex(p => p.id === editId);
+        if (index !== -1) {
+          products[index] = { id: editId, catalogId, title, category, material, price1, price30, price50, price100, description, images: tempFormImages };
+        }
+      } else {
+        const newObj = {
+          id: "prod-" + Date.now(),
+          catalogId, title, category, material, price1, price30, price50, price100, description, images: tempFormImages
+        };
+        products.unshift(newObj);
+      }
+
+      saveProductsToStorage();
+      renderAdminProductsTable();
+      renderAdminCatalogsTable();
+      renderProducts();
+      closeProductForm();
+    }
+
+    function deleteProduct(id) {
+      if (confirm("Tem certeza de que deseja remover este produto do catálogo?")) {
+        products = products.filter(p => p.id !== id);
+        saveProductsToStorage();
+        renderAdminProductsTable();
+        renderAdminCatalogsTable();
+        renderProducts();
+      }
+    }
+
+    function populateCatalogSelectOptions() {
+      const select = document.getElementById("prodCatalogSelect");
+      select.innerHTML = catalogsList.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+    }
+
+    function populateCategorySelectOptions() {
+      const select = document.getElementById("prodCategory");
+      select.innerHTML = categoriesList.map(c => `<option value="${c}">${c}</option>`).join('');
+    }
+
+    function renderAdminProductsTable() {
+      document.getElementById("adminProductCount").innerText = products.length;
+      const tbody = document.getElementById("adminProductsTableBody");
+      
+      tbody.innerHTML = products.map(p => {
+        const catObj = catalogsList.find(c => c.id === p.catalogId);
+        const catalogName = catObj ? catObj.name : 'Geral';
+        const mainImg = (p.images && p.images.length > 0) ? p.images[0] : '';
+
+        return `
+          <tr class="hover:bg-neutral-900/50 transition">
+            <td class="p-3">
+              <div class="w-10 h-10 png-checkerboard rounded-lg border border-neutral-800 overflow-hidden flex items-center justify-center">
+                <img src="${mainImg}" class="max-h-full max-w-full object-contain">
+              </div>
+            </td>
+            <td class="p-3">
+              <span class="font-bold text-white block">${p.title}</span>
+              <span class="text-[10px] text-gray-500">${p.category} • ${p.images ? p.images.length : 0} fotos</span>
+            </td>
+            <td class="p-3 font-semibold text-gray-400 text-[11px]">${catalogName}</td>
+            <td class="p-3 font-semibold text-red-400 text-[11px]">${p.material}</td>
+            <td class="p-3 font-bold text-white">R$ ${p.price1.toFixed(2)}</td>
+            <td class="p-3 text-[11px] text-gray-400">
+              30un: R$${p.price30.toFixed(2)} | 50un: R$${p.price50.toFixed(2)} | 100un: R$${p.price100.toFixed(2)}
+            </td>
+            <td class="p-3 text-right space-x-2">
+              <button onclick="editProduct('${p.id}')" class="p-1.5 bg-neutral-800 hover:bg-neutral-700 text-gray-200 rounded-md">
+                <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
+              </button>
+              <button onclick="deleteProduct('${p.id}')" class="p-1.5 bg-red-950 hover:bg-red-900 text-red-400 rounded-md">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    // CATALOGS & NOMENCLATURE MANAGEMENT LOGIC
+    function renderAdminCatalogsTable() {
+      document.getElementById("adminCatalogCount").innerText = catalogsList.length;
+      const tbody = document.getElementById("adminCatalogsTableBody");
+
+      tbody.innerHTML = catalogsList.map(c => {
+        const count = products.filter(p => p.catalogId === c.id).length;
+        return `
+          <tr class="hover:bg-neutral-900/50 transition">
+            <td class="p-3 font-semibold text-white">${c.name}</td>
+            <td class="p-3 text-gray-400 font-bold">${count} produtos</td>
+            <td class="p-3 text-right space-x-1">
+              <button onclick="editCatalogName('${c.id}')" class="p-1.5 bg-neutral-800 hover:bg-neutral-700 text-gray-200 rounded-md">
+                <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
+              </button>
+              ${catalogsList.length > 1 ? `
+                <button onclick="deleteCatalog('${c.id}')" class="p-1.5 bg-red-950 hover:bg-red-900 text-red-400 rounded-md">
+                  <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                </button>
+              ` : '<span class="text-[10px] text-gray-600">Padrão</span>'}
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    function saveNewCatalog(e) {
+      e.preventDefault();
+      const input = document.getElementById("newCatalogInput");
+      const name = input.value.trim();
+
+      if (name) {
+        const newCat = {
+          id: "cat-" + Date.now(),
+          name: name
+        };
+        catalogsList.push(newCat);
+        saveCatalogsToStorage();
+        renderAdminCatalogsTable();
+        populateCatalogSelectOptions();
+        input.value = "";
+      }
+    }
+
+    function editCatalogName(id) {
+      const cat = catalogsList.find(c => c.id === id);
+      if (!cat) return;
+
+      const newName = prompt("Altere o nome deste catálogo / nomenclatura:", cat.name);
+      if (newName && newName.trim() !== "") {
+        cat.name = newName.trim();
+        saveCatalogsToStorage();
+        renderAdminCatalogsTable();
+        renderAdminProductsTable();
+        renderProducts();
+      }
+    }
+
+    function deleteCatalog(id) {
+      if (catalogsList.length <= 1) {
+        alert("Você precisa ter pelo menos 1 catálogo ativo!");
+        return;
+      }
+
+      if (confirm("Tem certeza que deseja excluir esta nomenclatura? Os produtos vinculados a ela serão movidos para o primeiro catálogo disponível.")) {
+        catalogsList = catalogsList.filter(c => c.id !== id);
+        const fallbackCatalogId = catalogsList[0].id;
+
+        products.forEach(p => {
+          if (p.catalogId === id) {
+            p.catalogId = fallbackCatalogId;
+          }
+        });
+
+        if (activeCatalogId === id) {
+          activeCatalogId = fallbackCatalogId;
+        }
+
+        saveCatalogsToStorage();
+        saveProductsToStorage();
+        renderAdminCatalogsTable();
+        renderAdminProductsTable();
+        renderProducts();
+      }
+    }
+
+    // CATEGORIES MANAGEMENT LOGIC
+    function renderAdminCategoriesTable() {
+      document.getElementById("adminCategoryCount").innerText = categoriesList.length;
+      const tbody = document.getElementById("adminCategoriesTableBody");
+
+      tbody.innerHTML = categoriesList.map(cat => `
+        <tr class="hover:bg-neutral-900/50 transition">
+          <td class="p-3 font-semibold text-white">${cat}</td>
+          <td class="p-3 text-right">
+            <button onclick="deleteCategory('${cat}')" class="p-1.5 bg-red-950 hover:bg-red-900 text-red-400 rounded-md">
+              <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function saveCategory(e) {
+      e.preventDefault();
+      const input = document.getElementById("newCategoryInput");
+      const catName = input.value.trim();
+
+      if (catName && !categoriesList.includes(catName)) {
+        categoriesList.push(catName);
+        saveCategoriesToStorage();
+        renderAdminCategoriesTable();
+        input.value = "";
+      } else if (categoriesList.includes(catName)) {
+        alert("Esta categoria já existe!");
+      }
+    }
+
+    function deleteCategory(catName) {
+      if (confirm(`Deseja remover a categoria "${catName}"?`)) {
+        categoriesList = categoriesList.filter(c => c !== catName);
+        saveCategoriesToStorage();
+        renderAdminCategoriesTable();
+      }
+    }
+
+    // STORE SETTINGS FORM
+    function populateStoreSettingsForm() {
+      document.getElementById("settingStoreName").value = storeSettings.storeName;
+      document.getElementById("settingHeroTitle").value = storeSettings.heroTitle;
+      document.getElementById("settingHeroSubtitle").value = storeSettings.heroSubtitle;
+      document.getElementById("settingHeroBg").value = storeSettings.heroBg;
+      document.getElementById("settingInstagram").value = storeSettings.instagram;
+      document.getElementById("settingWhatsapp").value = storeSettings.whatsapp;
+    }
+
+    function saveStoreSettings(e) {
+      e.preventDefault();
+      storeSettings.storeName = document.getElementById("settingStoreName").value;
+      storeSettings.heroTitle = document.getElementById("settingHeroTitle").value;
+      storeSettings.heroSubtitle = document.getElementById("settingHeroSubtitle").value;
+      storeSettings.heroBg = document.getElementById("settingHeroBg").value;
+      storeSettings.instagram = document.getElementById("settingInstagram").value;
+      storeSettings.whatsapp = document.getElementById("settingWhatsapp").value;
+
+      saveSettingsToStorage();
+      alert("Configurações da loja salvas com sucesso!");
+    }
+  </script>
+</body>
+</html>
